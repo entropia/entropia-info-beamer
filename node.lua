@@ -15,6 +15,11 @@ local settings = ({
             y = 200,
             size = 100,
         },
+        termine = {
+            x = 0,
+            y = 300,
+            size = 100,
+        },
     },
     ["1920x1080"] = {
         uhr = {
@@ -25,6 +30,11 @@ local settings = ({
         freifunk = {
             x = 0,
             y = 200,
+            size = 100,
+        },
+        termine = {
+            x = 0,
+            y = 300,
             size = 100,
         },
     },
@@ -75,11 +85,63 @@ local function Uhr(opt)
     }
 end
 
+local function termine(opt)
+
+util.file_watch("termine/termine.json", function(content)
+    termine = json.decode(content)
+end)
+
+util.auto_loader(_G)
+
+	local function wrap(str, limit, indent, indent1)
+    	limit = limit or 72
+    	local here = 1
+    	local wrapped = str:gsub("(%s+)()(%S+)()", function(sp, st, word, fi)
+        	if fi-here > limit then
+            	here = st
+            	return "\n"..word
+        	end
+    	end)
+    	local splitted = {}
+    	for token in string.gmatch(wrapped, "[^\n]+") do
+        	splitted[#splitted + 1] = token
+    	end
+    	return splitted
+	end
+
+local function draw()
+	local y_threshold = 730
+
+    local y = 0
+    font:write(10, y, "Termine", 110, 1,1,1,1)
+    y = y + 130
+    for i, termin in ipairs(termine) do
+        for i, line in ipairs(wrap(termin.date, 20)) do
+            font:write(10, y, line, 60, 1,1,1,1)
+            y = y + 60
+            if y > y_threshold then break end
+        end
+        y = y + 10
+        for i, line in ipairs(wrap(termin.desc, 20)) do
+            font:write(10, y, line, 50, 1,1,1,1)
+            y = y + 50
+            if y > y_threshold then break end
+        end
+        y = y + 30
+        if y > y_threshold then break end
+    end
+    return {
+        draw = draw;
+    }
+end
+
+
 local uhr = Uhr(settings.uhr)
 local freifunk = Freifunk(settings.freifunk)
+local termine = Termine(settings.termine)
 
 function node.render()
     uhr.draw()
     freifunk.draw()
-    termine(WIDTH - 460, 120)
+    termine.draw()
 end

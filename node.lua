@@ -81,4 +81,5 @@ local freifunk = Freifunk(settings.freifunk)
 function node.render()
     uhr.draw()
     freifunk.draw()
+    termine(WIDTH - 460, 120)
 end

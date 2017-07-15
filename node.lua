@@ -134,6 +134,7 @@ local function draw()
         draw = draw;
     }
 end
+end
 
 
 local uhr = Uhr(settings.uhr)

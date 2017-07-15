@@ -1,17 +1,4 @@
 {
-    "name": "Top Level",
-    "options": [{
-        "title": "Overlay",
-        "ui_width": 4,
-        "name": "overlay",
-        "type": "resource",
-        "valid": ["image"],
-        "default": "overlay.png"
-    }, {
-        "title": "Overlay last",
-        "ui_width": 4,
-        "name": "overlay_last",
-        "type": "boolean",
-        "default": false
-    }]
+    "name": "Foo",
+    "options": []
 }

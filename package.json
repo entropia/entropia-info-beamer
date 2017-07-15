@@ -1,8 +1,5 @@
 {
-    "name": "Entropia Info Beamer",
-    "author": "fw@dividuum.de",
-    "desc": "Running at Entropia e.V.",
-    "runtime": {
-        "antialias": true
-    }
+    "name": "Test",
+    "author": "infobeamer@entropia.de",
+    "desc": "Running at Entropia e.V."
 }

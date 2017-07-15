@@ -1,5 +1,0 @@
-{
-    "name": "Music Player Daemon",
-    "permissions": {"network": "Needs to connect to MPD"},
-    "options": []
-}

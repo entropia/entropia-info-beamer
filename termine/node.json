@@ -1,5 +1,0 @@
-{
-    "name": "Wiki Termine",
-    "permissions": {"network": "Needs to fetch data from the wiki"},
-    "options": []
-}

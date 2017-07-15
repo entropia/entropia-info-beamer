@@ -1,5 +1,0 @@
-{
-    "name": "KVV Fahrplan",
-    "permissions": {"network": "Needs to fetch KVV data using a HTTP request"},
-    "options": []
-}

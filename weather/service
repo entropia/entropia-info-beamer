@@ -1,6 +1,0 @@
-#!/bin/sh
-
-sleep 5
-wget http://api.wunderground.com/api/d4e086726b76dc47/conditions/q/zmw:00000.1.10727.json -O conditions.json
-wget http://api.wunderground.com/api/d4e086726b76dc47/forecast/q/zmw:00000.1.10727.json -O forecast.json
-sleep 900

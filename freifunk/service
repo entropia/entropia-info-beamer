@@ -1,0 +1,26 @@
+#!/usr/bin/python
+import sys, time, socket, traceback, requests
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+def gather_statistics():
+    r = requests.get("https://api.karlsruhe.freifunk.net/hopglass/raw.json")
+    r.raise_for_status()
+    total_clients = sum(
+        node['statistics'].get('clients', {}).get('total', 0)
+        for node_id, node in r.json().iteritems()
+    )
+    print >>sys.stderr, "total clients: %d" % total_clients
+    sock.sendto('root/freifunk/clients:%d' % total_clients, ('127.0.0.1', 4444))
+
+def main():
+    while 1:
+        try:
+            gather_statistics()
+            time.sleep(60)
+        except:
+            traceback.print_exc()
+            time.sleep(120)
+
+if __name__ == "__main__":
+    main()

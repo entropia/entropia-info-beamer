@@ -1,0 +1,5 @@
+{
+    "name": "Freifunk Statistik",
+    "permissions": {"network": "Needs to connect to freifunk API"},
+    "options": []
+}

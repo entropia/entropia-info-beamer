@@ -1,0 +1,5 @@
+{
+    "name": "Power Settings",
+    "permissions": {"network": "Query club.entropia.de"},
+    "options": []
+}

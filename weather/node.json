@@ -1,0 +1,5 @@
+{
+    "name": "Wettervorhersage",
+    "permissions": {"network": "Needs to contact remote source for forecasts"},
+    "options": []
+}

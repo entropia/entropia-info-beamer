@@ -1,0 +1,5 @@
+{
+    "name": "Raumfarben Sniffer",
+    "permissions": {"network": "Needs to open a listen socket to receive colors"},
+    "options": []
+}

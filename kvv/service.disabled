@@ -1,0 +1,89 @@
+#!/usr/bin/python
+import time, json, datetime, re, itertools, socket, httplib
+from operator import itemgetter
+
+def send_to_clock(data):
+
+    now = datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+
+    def from_html(h):
+        r = round(1.0 / 255 * int(h[0:2], 16), 2)
+        g = round(1.0 / 255 * int(h[2:4], 16), 2)
+        b = round(1.0 / 255 * int(h[4:6], 16), 2)
+        return r, g, b
+
+    mapping = {
+        "1"   : from_html("ed1c24"),
+        "2"   : from_html("0071bc"),
+        "4"   : from_html("ffcb04"),
+        "5"   : from_html("00c0f3"),
+        "6E"  : from_html("80c342"),
+        "S1"  : from_html("00a76d"),
+        "S11" : from_html("00a76d"),
+        "S2"  : from_html("a068aa"),
+        "S4"  : from_html("9f184c"),
+        "S41" : from_html("9f184c"),
+        "S5"  : from_html("f8aca5"),
+    }
+
+    deps = json.loads(data)['departures']
+
+    # print deps
+
+    minutes = re.compile("([0-9]+) min")
+    exact = re.compile("([0-9]+):([0-9]+)")
+
+    dots = []
+    for dep in deps:
+        time = dep['time']
+
+        if time == '0':
+            delta = 0
+        elif minutes.search(time):
+            m = minutes.match(time)
+            delta = 60 * int(m.group(1))
+        elif exact.search(time):
+            t = exact.match(time)
+            abfahrt = now.replace(hour=int(t.group(1)), minute=int(t.group(2)), second=0)
+            if abfahrt < now:
+                abfahrt += datetime.timedelta(days=1)
+            delta = (abfahrt - now).seconds
+
+        if delta > 45 * 60:
+            break
+
+        color = mapping.get(dep['route'], (0,0,0))
+
+        abfahrt = now + datetime.timedelta(seconds=delta)
+        since_the_hour = (
+            abfahrt - 
+            abfahrt.replace(minute=0, second=0)
+        ).seconds
+
+        dots.append((since_the_hour, color, dep['route']))
+        # print now, since_the_hour/60, time, since_the_hour, color
+        
+    out = {}
+    for cluster, dot in itertools.groupby(sorted(dots), itemgetter(0)):
+        out[str(cluster)] = list((d, r) for _, d, r in dot)
+
+    out = json.dumps(out)
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.sendto('root/clock/dots:%s' % out , ('127.0.0.1', 4444))
+
+def main():
+    time.sleep(15)
+    conn = httplib.HTTPConnection("live.kvv.de", 80)
+    conn.request("GET","/webapp/departures/bystop/de:8212:2?maxInfos=15&key=377d840e54b59adbe53608ba1aad70e8")
+    res = conn.getresponse()
+    data = res.read()
+
+    with file("live.json", "wb") as f:
+        f.write(data)
+    send_to_clock(data)
+
+    time.sleep(45)
+
+if __name__ == "__main__":
+    main()

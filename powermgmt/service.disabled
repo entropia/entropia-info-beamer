@@ -6,7 +6,7 @@ import traceback
 from hosted import DEVICE
 
 def check_and_update_power():
-    r = requests.get("http://club.entropia.de/status.json", headers={
+    r = requests.get("http://status.club.entropia.de/status.json", headers={
         'User-Agent': 'club info-beamer power toggle'
     })
     r.raise_for_status()

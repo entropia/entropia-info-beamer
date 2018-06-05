@@ -3,12 +3,13 @@ local localized, CHILDS, CONTENTS = ...
 local M = {}
 
 local font = resource.load_font(localized "roboto.ttf")
+local coords 
 local text
 
 print "sub module init"
 
-function M.draw(x, y, w, h)
-    font:write(x, y, text, h, 1,1,1,1)
+function M.draw(res)
+    font:write(coords.res.x, coords.res.y, text, coords.res.h, 1,1,1,1)
 end
 
 function M.unload()
@@ -19,6 +20,9 @@ function M.content_update(name)
     print("sub module content update", name)
     if name == 'test.txt' then
         text = resource.load_file(localized(name))
+    end
+    if name == 'coords.json' then
+        coords = json.decode(resource.load_file(localized(name)))
     end
 end
 

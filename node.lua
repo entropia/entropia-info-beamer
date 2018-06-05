@@ -2,7 +2,7 @@ node.alias "*"
 util.noglobals()
 
 local settings = ({
-    ["1280x1024"] = {
+    ["w1280h1024"] = {
         uhr = {
             x = 0,
             y = 0,
@@ -19,7 +19,7 @@ local settings = ({
             size = 100,
         },
     },
-    ["1920x1080"] = {
+    ["w1920h1080"] = {
         test = {
             x = 0,
             y = 0,
@@ -39,13 +39,13 @@ local settings = ({
             h = 200,
         },
     },
-})[NATIVE_WIDTH.."x"..NATIVE_HEIGHT]
+})["w"..NATIVE_WIDTH.."h"..NATIVE_HEIGHT]
 
 local loader = require "loader"
 
 gl.setup(NATIVE_WIDTH, NATIVE_HEIGHT)
 function node.render()
     for name, module in pairs(loader.modules) do
-        module.draw(settings[module].x, settings[module].y, settings[module].w, settings[module].h)
+        module.draw("w"..NATIVE_WIDTH.."h"..NATIVE_HEIGHT)
     end
 end

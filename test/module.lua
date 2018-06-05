@@ -7,8 +7,8 @@ local text
 
 print "sub module init"
 
-function M.draw()
-    font:write(100, 100, text, 30, 1,1,1,1)
+function M.draw(x, y, w, h)
+    font:write(x, y, text, h, 1,1,1,1)
 end
 
 function M.unload()

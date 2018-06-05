@@ -2,6 +2,7 @@ local localized, CHILDS, CONTENTS = ...
 
 local M = {}
 
+local json = require "json"
 local font = resource.load_font(localized "roboto.ttf")
 local coords 
 local text
@@ -9,7 +10,7 @@ local text
 print "sub module init"
 
 function M.draw(res)
-    font:write(coords.res.x, coords.res.y, text, coords.res.h, 1,1,1,1)
+    font:write(coords[res].x, coords[res].y, text, coords[res].h, 1,1,1,1)
 end
 
 function M.unload()

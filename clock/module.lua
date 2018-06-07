@@ -44,7 +44,7 @@ function M.draw()
         fake_second = 60
     end
     
-    if hours, minutes, seconds then
+    if hours and minutes and seconds then
         zeiger(w/4,  10, 360/12 * hours12 - 90)
         zeiger(w/2.5, 5, 360/60 * minutes - 90)
         zeiger(w/2.1, 2, 360/60 * (((math.sin((fake_second-0.4) * math.pi*2)+1)/8) + fake_second) - 90)

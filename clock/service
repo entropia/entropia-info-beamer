@@ -10,7 +10,7 @@ def send_clock():
     sock.sendto('root/clock/hours:%f' % now.hour, ('127.0.0.1', 4444))
     sock.sendto('root/clock/minutes:%f' % now.minute, ('127.0.0.1', 4444))
     sock.sendto('root/clock/seconds:%f' % now.second, ('127.0.0.1', 4444))
-    sock.sendto('root/clock/iso_date:%s' % now.date.isoformat(), ('127.0.0.1', 4444))
+    sock.sendto('root/clock/iso_date:%s' % now.date().isoformat(), ('127.0.0.1', 4444))
 
 while 1:
     send_clock()

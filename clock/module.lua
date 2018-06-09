@@ -9,7 +9,7 @@ local coords
 local roboto = resource.load_font(localized "roboto.ttf")
 local robotob = resource.load_font(localized "robotob.ttf")
 local white = resource.create_colored_texture(1,1,1,1)
-local dot = resource.load_image("dot.png")
+local dot = resource.load_image(localized "dot.png")
 local x, y, w, h
 local hours, hours12, minutes, seconds = 0
 local iso_date
@@ -30,7 +30,7 @@ util.data_mapper{
     end;
 }
 
-function zeiger(size, strength, winkel, r,g,b,a)
+function M.zeiger(size, strength, winkel, r,g,b,a)
     gl.pushMatrix()
     gl.translate(w/2, h/2) 
     gl.rotate(winkel, 0, 0, 1)
@@ -45,9 +45,9 @@ function M.draw()
     end
     
     if hours and minutes and seconds then
-        zeiger(w/4,  10, 360/12 * hours12 - 90)
-        zeiger(w/2.5, 5, 360/60 * minutes - 90)
-        zeiger(w/2.1, 2, 360/60 * (((math.sin((fake_second-0.4) * math.pi*2)+1)/8) + fake_second) - 90)
+        M.zeiger(w/4,  10, 360/12 * hours12 - 90)
+        M.zeiger(w/2.5, 5, 360/60 * minutes - 90)
+        M.zeiger(w/2.1, 2, 360/60 * (((math.sin((fake_second-0.4) * math.pi*2)+1)/8) + fake_second) - 90)
     end
 end
 

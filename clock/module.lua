@@ -47,13 +47,15 @@ function M.digital_clock()
 end
 
 function M.weekday_date()
-    local date_string = weekday .. " " .. iso_date
-    local date_string_w = mononoki:width(date_string, (h-w)*0.4*0.75)
-    mononoki:write(w/2 - date_string_w/2, w+(h-w)/2, date_string, (h-w)*0.4*0.8, 1,1,1,1)
+    if base_time ~= 0 then
+        local date_string = weekday .. " " .. iso_date
+        local date_string_w = mononoki:width(date_string, (h-w)*0.4*0.75)
+        mononoki:write(w/2 - date_string_w/2, w+(h-w)/2, date_string, (h-w)*0.4*0.8, 1,1,1,1)
+    end
 end
 
 function M.scheckin_warning()
-    if math.floor(hour24) == 21 and minute >= 30 and minute < 55 and weekday ~= "Sunday" then
+    if base_time ~= 0 and math.floor(hour24) == 21 and minute >= 30 and minute < 55 and weekday ~= "Sunday" then
         local scheckin = "SCHECK-IN"
         local scheckin_w = mononokib:width(scheckin, w*0.08)
         mononokib:write(w/2 - scheckin_w/2, w*5/8, scheckin, w*0.1, 1,0,0,math.abs(math.sin(sys.now()*3)))
@@ -73,16 +75,16 @@ function M.draw()
         fake_second = 60
     end
 
-    M.zeiger(w/4,   w/80,  360/12 * hour - 90)
-    M.zeiger(w/2.5, w/160, 360/60 * minute - 90)
-    M.zeiger(w/2.1, w/400, 360/60 * (((math.sin((fake_second-0.4) * math.pi*2)+1)/8) + fake_second) - 90)
-    
-    -- only use width because height includes date and time printed below
-    dot:draw(x+w/2-w/30, y+w/2-w/30, x+w/2+w/30, y+w/2+w/30)
-
     M.digital_clock()
     M.weekday_date()
     M.scheckin_warning()
+
+    M.zeiger(w/4,   w/80,  360/12 * hour - 90)
+    M.zeiger(w/2.5, w/160, 360/60 * minute - 90)
+    M.zeiger(w/2.1, w/400, 360/60 * (((math.sin((fake_second-0.4) * math.pi*2)+1)/8) + fake_second) - 90)
+
+    -- only use width because height includes date and time printed below
+    dot:draw(x+w/2-w/30, y+w/2-w/30, x+w/2+w/30, y+w/2+w/30)
 end
 
 function M.unload()

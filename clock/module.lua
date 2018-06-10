@@ -26,7 +26,7 @@ util.data_mapper{
     ["iso_date"] = function(iso)
         iso_date = iso
     end;
-    "weekday"] = function(day)
+    ["weekday"] = function(day)
         weekday = day
     end;
 }

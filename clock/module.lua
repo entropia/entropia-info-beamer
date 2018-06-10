@@ -9,10 +9,12 @@ local coords
 
 local roboto = resource.load_font(localized "roboto.ttf")
 local robotob = resource.load_font(localized "robotob.ttf")
+local mononoki = resource.load_font(localized "mononoki.ttf")
+local mononokib = resource.load_font(localized "mononokib.ttf")
 local white = resource.create_colored_texture(1,1,1,1)
 local dot = resource.load_image(localized "dot.png")
 local base_time = 0
-local iso_date
+local iso_date, weekday
 
 util.data_mapper{
     ["time"] = function(time)
@@ -24,6 +26,9 @@ util.data_mapper{
     ["iso_date"] = function(iso)
         iso_date = iso
     end;
+    "weekday"] = function(day)
+        weekday = day
+    end;
 }
 
 function M.zeiger(size, strength, winkel, r,g,b,a)
@@ -32,6 +37,18 @@ function M.zeiger(size, strength, winkel, r,g,b,a)
     gl.rotate(winkel, 0, 0, 1)
     white:draw(0, -strength, size, strength)
     gl.popMatrix()
+end
+
+function M.digital_clock(hour24, minute, second)
+    local digital = string.format("%02d:%02d:%02d", hour24, minute, second)
+    local digital_w = mononoki:width(digital, (h-w)*0.6*0.75)
+    mononoki:write(w/2 - digital_w/2, w, digital, (h-w)*0.6*0.8, 1,1,1,1)
+end
+
+function M.weekday_date()
+    local date_string = weekday .. " " .. iso_date
+    local date_string_w = mononoki:width(date_string, (h-w)*0.4*0.75)
+    mononoki:write(w/2 - date_string_w/2, w+(h-w)/2, date_string, (h-w)*0.4*0.8, 1,1,1,1)
 end
 
 function M.draw()
@@ -46,14 +63,16 @@ function M.draw()
     if fake_second >= 60 then
         fake_second = 60
     end
+
+    M.zeiger(w/4,   w/80,  360/12 * hour - 90)
+    M.zeiger(w/2.5, w/160, 360/60 * minute - 90)
+    M.zeiger(w/2.1, w/400, 360/60 * (((math.sin((fake_second-0.4) * math.pi*2)+1)/8) + fake_second) - 90)
     
-    if base_time ~= 0 then
-        M.zeiger(w/4,   w/80,  360/12 * hour - 90)
-        M.zeiger(w/2.5, w/160, 360/60 * minute - 90)
-        M.zeiger(w/2.1, w/400, 360/60 * (((math.sin((fake_second-0.4) * math.pi*2)+1)/8) + fake_second) - 90)
-    end
     -- only use width because height includes date and time printed below
     dot:draw(x+w/2-w/30, y+w/2-w/30, x+w/2+w/30, y+w/2+w/30)
+
+    M.digital_and_date(hour24, minute, second)
+    M.weekday_date()
 end
 
 function M.unload()

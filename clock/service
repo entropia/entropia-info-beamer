@@ -11,5 +11,6 @@ def send_clock():
 
     sock.sendto('root/clock/time:%f' % since_midnight, ('127.0.0.1', 4444))
     sock.sendto('root/clock/iso_date:%s' % now.date().isoformat(), ('127.0.0.1', 4444))
+    sock.sendto('root/clock/weekday:%s' % now.date().strftime("%A"), ('127.0.0.1', 4444))
 
 send_clock()

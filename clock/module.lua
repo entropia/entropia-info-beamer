@@ -11,19 +11,15 @@ local roboto = resource.load_font(localized "roboto.ttf")
 local robotob = resource.load_font(localized "robotob.ttf")
 local white = resource.create_colored_texture(1,1,1,1)
 local dot = resource.load_image(localized "dot.png")
-local hours, hours12, minutes, seconds = 0
+local base_time = 0
 local iso_date
 
 util.data_mapper{
-    ["hours"] = function(hour)
-        hours = tonumber(hour)
-        hours12 = hours % 12
-    end;
-    ["minutes"] = function(minute)
-        minutes = tonumber(minute)
-    end;
-    ["seconds"] = function(second)
-        seconds = tonumber(second)
+    ["time"] = function(time)
+        -- get the time when info-beamer was started
+        -- needed for smoothly moving handles,
+        -- otherwise the handles only get updated when the clock service sends new data
+        base_time = tonumber(time) - sys.now()
     end;
     ["iso_date"] = function(iso)
         iso_date = iso
@@ -39,14 +35,21 @@ function M.zeiger(size, strength, winkel, r,g,b,a)
 end
 
 function M.draw()
-    local fake_second = seconds * 1.05
+    local time = base_time + sys.now()
+
+    local hour24 = (time / 3600) % 24
+    local hour = (time / 3600) % 12
+    local minute = time % 3600 / 60
+    local second = time % 60
+    
+    local fake_second = second * 1.05
     if fake_second >= 60 then
         fake_second = 60
     end
     
-    if hours and minutes and seconds then
-        M.zeiger(w/4,  10, 360/12 * hours12 - 90)
-        M.zeiger(w/2.5, 5, 360/60 * minutes - 90)
+    if base_time ~= 0 then
+        M.zeiger(w/4,  10, 360/12 * hour - 90)
+        M.zeiger(w/2.5, 5, 360/60 * minute - 90)
         M.zeiger(w/2.1, 2, 360/60 * (((math.sin((fake_second-0.4) * math.pi*2)+1)/8) + fake_second) - 90)
     end
 end

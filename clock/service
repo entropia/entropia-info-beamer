@@ -6,12 +6,12 @@ ber = pytz.timezone("Europe/Berlin")
 
 def send_clock():
     now = datetime.datetime.now(ber)
+    # manually compute seconds like this so we don't have to care for more timezone shit
+    since_midnight = (now.hour * 60 + now.minute) * 60 + now.second
 
-    sock.sendto('root/clock/hours:%f' % now.hour, ('127.0.0.1', 4444))
-    sock.sendto('root/clock/minutes:%f' % now.minute, ('127.0.0.1', 4444))
-    sock.sendto('root/clock/seconds:%f' % now.second, ('127.0.0.1', 4444))
+    sock.sendto('root/clock/time:%f' % since_midnight, ('127.0.0.1', 4444))
     sock.sendto('root/clock/iso_date:%s' % now.date().isoformat(), ('127.0.0.1', 4444))
 
 while 1:
     send_clock()
-    time.sleep(5)
+    time.sleep(60)

@@ -28,7 +28,7 @@ util.data_mapper{
 
 function M.zeiger(size, strength, winkel, r,g,b,a)
     gl.pushMatrix()
-    gl.translate(w/2, w/2)
+    gl.translate(x + w/2, y + w/2)
     gl.rotate(winkel, 0, 0, 1)
     white:draw(0, -strength, size, strength)
     gl.popMatrix()
@@ -53,7 +53,7 @@ function M.draw()
         M.zeiger(w/2.1, w/400, 360/60 * (((math.sin((fake_second-0.4) * math.pi*2)+1)/8) + fake_second) - 90)
     end
     -- only use width because height includes date and time printed below
-    dot:draw(w/2-w/30, w/2-w/30, w/2+w/30, w/2+w/30)
+    dot:draw(x+w/2-w/30, y+w/2-w/30, x+w/2+w/30, y+w/2+w/30)
 end
 
 function M.unload()

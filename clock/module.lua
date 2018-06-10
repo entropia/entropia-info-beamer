@@ -42,23 +42,26 @@ end
 
 function M.digital_clock()
     local digital = string.format("%02d:%02d:%02d", hour24, minute, second)
-    local digital_w = mononoki:width(digital, (h-w)*0.6*0.75)
-    mononoki:write(w/2 - digital_w/2, w, digital, (h-w)*0.6*0.8, 1,1,1,1)
+    local digital_h = (h - w) * 0.6 * 0.8
+    local digital_w = mononoki:width(digital, digital_h * 0.95)
+    mononoki:write(w/2 - digital_w/2, w, digital, digital_h, 1,1,1,1)
 end
 
 function M.weekday_date()
     if base_time ~= 0 then
         local date_string = weekday .. " " .. iso_date
-        local date_string_w = mononoki:width(date_string, (h-w)*0.4*0.75)
-        mononoki:write(w/2 - date_string_w/2, w+(h-w)/2, date_string, (h-w)*0.4*0.8, 1,1,1,1)
+        local date_string_h = (h - w) * 0.4 * 0.8
+        local date_string_w = mononoki:width(date_string, date_string_h * 0.97)
+        mononoki:write(w/2 - date_string_w/2, w+(h-w)/2, date_string, date_string_h, 1,1,1,1)
     end
 end
 
 function M.scheckin_warning()
     if base_time ~= 0 and math.floor(hour24) == 21 and minute >= 30 and minute < 55 and weekday ~= "Sunday" then
         local scheckin = "SCHECK-IN"
-        local scheckin_w = mononokib:width(scheckin, w*0.08)
-        mononokib:write(w/2 - scheckin_w/2, w*5/8, scheckin, w*0.1, 1,0,0,math.abs(math.sin(sys.now()*3)))
+        local scheckin_h = w * 0.1
+        local scheckin_w = mononokib:width(scheckin, scheckin_h * 0.95)
+        mononokib:write(w/2 - scheckin_w/2, w*5/8, scheckin, scheckin_h, 1,0,0,math.abs(math.sin(sys.now()*3)))
     end
 end
 

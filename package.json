@@ -1,5 +1,8 @@
 {
     "name": "Entropia Info Beamer (dev)",
     "author": "infobeamer@entropia.de",
-    "desc": "Running at Entropia e.V."
+    "desc": "Running at Entropia e.V.",
+    "runtime": {
+        "antialias": true
+    }
 }

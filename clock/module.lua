@@ -60,9 +60,6 @@ end
 
 function M.content_update(name)
     print("sub module content update", name)
-    if name == 'test.txt' then
-        text = resource.load_file(localized(name))
-    end
     if name == 'coords.json' then
         coords = json.decode(resource.load_file(localized(name)))
         x = coords[res].x

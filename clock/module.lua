@@ -71,7 +71,7 @@ function M.draw()
     -- only use width because height includes date and time printed below
     dot:draw(x+w/2-w/30, y+w/2-w/30, x+w/2+w/30, y+w/2+w/30)
 
-    M.digital_and_date(hour24, minute, second)
+    M.digital_clock(hour24, minute, second)
     M.weekday_date()
 end
 

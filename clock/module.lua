@@ -14,6 +14,7 @@ local mononokib = resource.load_font(localized "mononokib.ttf")
 local white = resource.create_colored_texture(1,1,1,1)
 local dot = resource.load_image(localized "dot.png")
 local base_time = 0
+local hour24, hour, minute, second
 local iso_date, weekday
 
 util.data_mapper{
@@ -39,7 +40,7 @@ function M.zeiger(size, strength, winkel, r,g,b,a)
     gl.popMatrix()
 end
 
-function M.digital_clock(hour24, minute, second)
+function M.digital_clock()
     local digital = string.format("%02d:%02d:%02d", hour24, minute, second)
     local digital_w = mononoki:width(digital, (h-w)*0.6*0.75)
     mononoki:write(w/2 - digital_w/2, w, digital, (h-w)*0.6*0.8, 1,1,1,1)
@@ -51,7 +52,7 @@ function M.weekday_date()
     mononoki:write(w/2 - date_string_w/2, w+(h-w)/2, date_string, (h-w)*0.4*0.8, 1,1,1,1)
 end
 
-function M.scheckin_warning(hour24, minute)
+function M.scheckin_warning()
     if math.floor(hour24) == 21 and minute >= 30 and minute < 55 and weekday ~= "Sunday" then
         local scheckin = "SCHECK-IN"
         local scheckin_w = mononokib:width(scheckin, w*0.08)
@@ -62,10 +63,10 @@ end
 function M.draw()
     local time = base_time + sys.now()
 
-    local hour24 = (time / 3600) % 24
-    local hour = (time / 3600) % 12
-    local minute = time % 3600 / 60
-    local second = time % 60
+    hour24 = (time / 3600) % 24
+    hour = (time / 3600) % 12
+    minute = time % 3600 / 60
+    second = time % 60
     
     local fake_second = second * 1.05
     if fake_second >= 60 then
@@ -79,9 +80,9 @@ function M.draw()
     -- only use width because height includes date and time printed below
     dot:draw(x+w/2-w/30, y+w/2-w/30, x+w/2+w/30, y+w/2+w/30)
 
-    M.digital_clock(hour24, minute, second)
+    M.digital_clock()
     M.weekday_date()
-    M.scheckin_warning(hour24, minute)
+    M.scheckin_warning()
 end
 
 function M.unload()

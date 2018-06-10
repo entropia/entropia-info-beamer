@@ -51,6 +51,14 @@ function M.weekday_date()
     mononoki:write(w/2 - date_string_w/2, w+(h-w)/2, date_string, (h-w)*0.4*0.8, 1,1,1,1)
 end
 
+function M.scheckin_warning(hour24, minute)
+    if math.floor(hour24) == 21 and minute >= 30 and minute < 55 and weekday ~= "Sunday" then
+        local scheckin = "SCHECK-IN"
+        local scheckin_w = mononokib:width(scheckin, w*0.08)
+        mononokib:write(w/2 - scheckin_w/2, w*5/8, scheckin, w*0.1, 1,0,0,math.abs(math.sin(sys.now()*3)))
+    end
+end
+
 function M.draw()
     local time = base_time + sys.now()
 
@@ -73,6 +81,7 @@ function M.draw()
 
     M.digital_clock(hour24, minute, second)
     M.weekday_date()
+    M.scheckin_warning(hour24, minute)
 end
 
 function M.unload()

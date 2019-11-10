@@ -52,4 +52,3 @@ function node.render()
         if y > y_threshold then break end
     end
 end
-

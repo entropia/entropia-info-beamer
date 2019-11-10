@@ -1,0 +1,22 @@
+{
+  "__metadata": {
+    "api": "https://info-beamer.com/api/v1/device/1762/on-device/18217-96e9dbcb6cf06aff880b2f876c45d32e",
+    "device_id": 1762,
+    "instance_id": 3352,
+    "package_id": 2837,
+    "scratch": "242b6d9a8c87fac5",
+    "secrets": {
+      "account": "9cb5abcd9af352c2d26fce95b67324fd",
+      "setup": "e49c79fbd33f8b03ba57a707a67c9fcd"
+    },
+    "setup_id": 2457
+  },
+  "overlay": {
+    "asset_id": "overlay.png",
+    "asset_name": "overlay.png",
+    "filename": "overlay.png",
+    "metadata": {},
+    "type": "image"
+  },
+  "overlay_last": false
+}

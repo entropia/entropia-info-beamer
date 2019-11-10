@@ -1,4 +1,4 @@
-gl.setup(1280, 1024)
+gl.setup(NATIVE_WIDTH, NATIVE_HEIGHT)
 
 hosted_init()
 
@@ -50,7 +50,7 @@ function square(child, width, height, n)
     return function(x, y)
         if n == 0 then
             fastchild.draw_child(child, x, y, x + width, y + height)
-        else 
+        else
             if cache_used >= n then
                 if cache then
                     cache:dispose()
@@ -65,11 +65,11 @@ function square(child, width, height, n)
 end
 
 local clock = square("clock", 800, 800, 1)
-local mpd = square("mpd", 1280, 80)
-local weather = square("weather", 300, 700, 5)
+-- local mpd = square("mpd", 1280, 80)
+-- local weather = square("weather", 300, 700, 5)
 local termine = square("termine", 450, 800, 60)
-local interface = square("if", 512, 69)
-local kvv = square("kvv", 768, 64)
+-- local interface = square("if", 512, 69)
+-- local kvv = square("kvv", 768, 64)
 -- fxkr = square("fxkr", 100, 100, 60)
 
 local frame = 0
@@ -78,20 +78,20 @@ function node.render()
     frame = frame + 1
 
     CONFIG.overlay.ensure_loaded():draw(0, 0, WIDTH, HEIGHT)
-    clock(10, 110)
+    clock(100, 100)
     if interrupt_child then
         print("drawing child " .. interrupt_child)
         local child = resource.render_child(interrupt_child)
         util.draw_correct(child, 0, 0, WIDTH, HEIGHT, 0.5)
         child:dispose()
     end
-
-    mpd(0, HEIGHT-80)
-    if sys.now() / 15 % 2 < 1 then
-        termine(WIDTH - 460, 120)
-    else
-        weather(WIDTH - 380, 130)
-    end
-    interface(0, 0)
-    kvv(WIDTH-760, 0)
+    termine(WIDTH - 600, 120)
+    -- mpd(0, HEIGHT-80)
+    -- if sys.now() / 15 % 2 < 1 then
+    --     termine(WIDTH - 660, 120)
+    -- else
+    --     weather(WIDTH - 380, 130)
+    -- end
+    -- interface(0, 0)
+    -- kvv(WIDTH-760, 0)
 end

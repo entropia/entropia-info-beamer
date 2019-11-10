@@ -50,7 +50,7 @@ local wobbly = resource.create_shader[[
 function zeiger(size, strength, winkel, r,g,b,a)
     wobbly:use{t = strength * math.cos(sys.now() + winkel / 360 * math.pi)}
     gl.pushMatrix()
-    gl.translate(WIDTH/2, HEIGHT/2) 
+    gl.translate(WIDTH/2, HEIGHT/2)
     gl.rotate(winkel, 0, 0, 1)
     tentacle:draw(0, -strength*6, size*1.2, strength*6)
     gl.popMatrix()
@@ -59,7 +59,7 @@ end
 
 function zeiger(size, strength, winkel, r,g,b,a)
     gl.pushMatrix()
-    gl.translate(WIDTH/2, HEIGHT/2) 
+    gl.translate(WIDTH/2, HEIGHT/2)
     gl.rotate(winkel, 0, 0, 1)
     white:draw(0, -strength, size, strength)
     gl.popMatrix()
@@ -79,7 +79,7 @@ function colored_marker(winkel, nth, r, g, b, text)
     winkel = winkel - 2
 
     gl.pushMatrix()
-    gl.translate(WIDTH/2, HEIGHT/2) 
+    gl.translate(WIDTH/2, HEIGHT/2)
     gl.rotate(winkel, 0, 0, 1)
     gl.translate(dist, 0)
     white:draw(0, 0, 40, 20, 0.5)
@@ -102,10 +102,10 @@ function colored_marker(winkel, nth, r, g, b, text)
     -- roboto:write(-5 * text_w - 1,-1-d, text, 20, 1,1,1,1)
     -- roboto:write(-5 * text_w + 0, 0-d, text, 20, 1,1,1,1)
     -- roboto:write(-5 * text_w + 1, 1-d, text, 20, 1,1,1,1)
-    roboto:write(-5 * text_w - 1,-1-d, text, 20, 0,0,0,1)
-    roboto:write(-5 * text_w - 1, 1-d, text, 20, 0,0,0,1)
-    roboto:write(-5 * text_w + 1,-1-d, text, 20, 0,0,0,1)
-    roboto:write(-5 * text_w + 1, 1-d, text, 20, 0,0,0,1)
+    -- roboto:write(-5 * text_w - 1,-1-d, text, 20, 0,0,0,1)
+    -- roboto:write(-5 * text_w - 1, 1-d, text, 20, 0,0,0,1)
+    -- roboto:write(-5 * text_w + 1,-1-d, text, 20, 0,0,0,1)
+    -- roboto:write(-5 * text_w + 1, 1-d, text, 20, 0,0,0,1)
     roboto:write(-5 * text_w + 0, 0-d, text, 20, 1,1,1,1)
     gl.popMatrix()
 end
@@ -114,7 +114,7 @@ end
 function node.render()
     if not bg then
         gl.pushMatrix()
-        gl.translate(WIDTH/2, HEIGHT/2) 
+        gl.translate(WIDTH/2, HEIGHT/2)
         for i = 0, 59 do
             gl.pushMatrix()
             gl.rotate(360/60*i, 0, 0, 1)
@@ -132,10 +132,10 @@ function node.render()
         for since_the_hour, cdots in pairs(dots) do
             since_the_hour = tonumber(since_the_hour)
             local angle = 360 / 60 * (since_the_hour / 60) - 90
-            for idx, dot_and_route in ipairs(cdots) do 
+            for idx, dot_and_route in ipairs(cdots) do
                 local dot = dot_and_route[1]
                 local route = dot_and_route[2]
-                colored_marker(angle, idx, dot[1], dot[2], dot[3], route) 
+                colored_marker(angle, idx, dot[1], dot[2], dot[3], route)
             end
         end
         bg = resource.create_snapshot()
@@ -180,6 +180,6 @@ function node.render()
     dot:draw(WIDTH/2-40, HEIGHT/2-40, WIDTH/2+40, HEIGHT/2+40)
 
     local digital = string.format("%d:%02d", hour24, minute)
-    local w = roboto:width(digital, 50) + 5
-    robotob:write(WIDTH/2 - w/2, HEIGHT/2 + 140, digital, 50, 1,1,1,1)
+    local w = roboto:width(digital, 100) + 5
+    robotob:write(WIDTH/2 - w/2, HEIGHT/2 -300, digital, 100, 1,1,1,0.8)
 end
